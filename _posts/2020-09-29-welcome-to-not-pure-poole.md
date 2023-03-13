@@ -12,40 +12,55 @@ toc:  true
 이제 취업을 위해 기본 CS(Computer System) 지식을 공부한 것을 기록하고 알고리즘도 꾸준히 문제를 푸는 과정들도 기록 할 예정이다.
 <br>
 블로그 생성 과정을 이 게시물에 적은 후 마크다운 문법들을 별도로 게시글을 작성할 예정임.
----
+
+--- 
 ### 1. GitHub Repository 생성 
 ![레포등록사진](https://user-images.githubusercontent.com/112313165/224630140-5d07314c-d99e-4b7f-ba5b-1dad576da6eb.png)
 
-1. 레포지토리 이름을 ```username.github.io```형식으로 작성한다.
+1. 레포지토리 이름을 하단의 형식으로 작성한다.
+```
+username.github.io
+```
+
 2. Add a README file을 선택한 후 레포지토리 생성
 
 ### 2. Git clone 이후 테스트까지
 1. 생성한 레포지토리를 터미널 환경에서 ```git clone http주소```형식으로 생성한 레포지토리 주소를 입력하여 로컬에 저장한다.
-ex) ```git clone https://github.com/parkyoungjiin/parkyoungjiin.github.io.git``` 
+![주소복사](https://user-images.githubusercontent.com/112313165/224632134-e89e3c3b-45c9-4a25-83e6-b6610362312a.png)
+```
+# 클론 예시
+git clone https://github.com/parkyoungjiin/parkyoungjiin.github.io.git
+``` 
 
 2. clone 한 폴더로 이동하여 테스트를 위해 Index 파일 생성(파일이 없는 경우 자동생성 된다.)
-`cd username.github.io` 
-`echo "Hello World" > index.html`
+    ```
+    cd username.github.io
+    echo "Hello World" > index.html
+    ```
 
 - cd : 디렉토리 이동 명령어
-`cd 디렉토리명`
+  ```
+  cd 디렉토리명
+  ```
 
 - echo: 문자열을 출력하는 명령어.
 `echo "문자열" > 파일명.html` 을 할 경우 덮어쓰기 옵션으로 인해 파일명에 문자열 내용이 저장된다.
- `echo "문자열" >> 파일명.html`의 경우는 추가**
+ `echo "문자열" >> 파일명.html`의 경우는 추가
 
  3. 생성된 파일은 ls 명령어로 확인 할 수 있음.
- 디렉토리 이동 : `cd username.github.io`
- 디렉토리 목록 : `ls`
-
+ ```
+ # 클론한 깃허브 폴더로 이동
+ cd username.github.io
+ # 디렉토리 목록 확인
+ ls
+  ```
  4. 파일이 올라갔을 경우 git에 올려주기 !
  위 명령어를 차례대로 입력해주면 깃허브에 올라간다.
-
-```
-git add .
-git commit -m "메시지"
-git push origin main
-```
+ ```
+  git add .
+  git commit -m "메시지"
+  git push origin main
+  ```
 5. 주소에 http://username.github.io 를 입력하면 홈페이지가 만들어진 것을 확인할 수 있다. 
 
 ---
@@ -62,8 +77,8 @@ ruby가 무엇이고 jekyll이 무엇인지 너무나 생소하여 정리해보�
 - 여기서는 **jekyll이 Ruby 언어로 만들어졌기에 설치한다 정도로 알면 될것 같다.** 
 
 #### ruby 설치과정
+여기서 homebrew를 통해 ruby를 설치했다.
 
-여기서 homebrew를 통해 ruby를 설치하였습니다.
 ```
 # homebrew 설치
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -76,7 +91,7 @@ echo 'export PATH=/opt/homebrew/bin:$PATH' >> ~/.zshrc
 
 ```
 
-#### rbenv
+### rbenv
 rbenv는 루비버전을 관리해주는 프로그램.
 ```
 # rbenv 설치
@@ -107,19 +122,19 @@ rbenv versions
 rbenv rehash
 ```
 
-###4.  jekyll과 bundler 설치
+### 4. jekyll과 bundler 설치
 
-##### Bundler
+#### Bundler
 요약하자면, 여러 개의 파일을 하나로 묶어주는 프로그램이다.
 [번들러 설명은 여기!](https://velog.io/@ksung1889/%EB%B2%88%EB%93%A4%EB%9F%ACbundler%EB%9E%80)
 
-##### jekyll
+#### jekyll
 - ruby 언어로 구성
 - 깃허브 블로그 작성 시에 많이 사용함.
 - 마크다운 언어로 작성한 글을 포스팅
 - 정적인 웹사이트로 만들기에 매우 빠르고 가볍다는 특징이 있음.
 - 홈페이지 자동 생성기라고 많이 알려짐.
-##### 설치
+#### 설치
 ```
 # bundler, jekyll 설치
 
@@ -133,9 +148,18 @@ rm -f index.html
 jekyll new ./
 ```
 
+jekyll 설치 완료 화면
+
+![성공1](https://user-images.githubusercontent.com/112313165/224721011-8347be3d-a12d-40fd-b157-1098d517d143.png)
+
+디렉토리 조회 시
+
+![성공12](https://user-images.githubusercontent.com/112313165/224721033-df48c594-f7a1-4095-8634-05cb5f8f2907.png)
+
+
 사진 넣을 공간(성공 시) 2개
 
-##### 설치 후
+#### 설치 후
 ```
 # 번들 업데이트, 설치
 bundle update
@@ -145,17 +169,18 @@ bundle install
 bundle exec jekyll serve
 ```
 
-성공했을 때 화면 사진
-위와 같은 화면이 나타나고 
-http://127.0.0.1:4000/ 를 들어갔을 때 
+서버 시작 후 성공했을 때의 화면이 나타나고
+![성공2](https://user-images.githubusercontent.com/112313165/224721049-c5a7c6e1-692b-430f-8ab4-9394fa4a8e4b.png)
 
-성공한 사진
+http://127.0.0.1:4000/ 를 들어갔을 때 홈페이지에 올라 간것을 확인할 수 있다.
+![성공3](https://user-images.githubusercontent.com/112313165/224721035-84e2cc6c-e849-4928-95b0-45de0924aea1.png)
 
-##### 테스트 완료 후
+
+#### 테스트 완료 후
 이제 깃에 최신화한 뒤 username.github.io 를 입력하여 자신의 깃허브 블로그 홈페이지에서 작동이 잘 되는 지 확인하면 된다!
 
 
-## 후기
+### 후기
 ```
 블로그를 만들고, 포스팅까지 5일이 걸렸다.
 그 과정에서 좌절하고 이것에 시간을 쏟는 게 맞는지 생각이 들었다.
