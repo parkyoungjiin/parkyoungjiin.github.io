@@ -1,169 +1,174 @@
 ---
 layout: post
-title: Welcome to Not Pure Poole
-date: 2020-09-29 23:18 +0800
-last_modified_at: 2020-10-01 01:08:25 +0800
+title: 첫 포스팅 과정(mac환경 블로그만들기)
+date: 2023-03-09 15:30 +0800
+last_modified_at: 2023-03-13 15:30 +0800
 tags: [jekyll theme, jekyll, tutorial]
 toc:  true
 ---
-Welcome to **Not Pure Poole**! This is an example post to show the layout.
-{: .message }
+## 첫 포스팅 과정
+### intro
+> 국비과정을 수료한 후 프로젝트 하는 중에 배웠던 개념들과 과정들을 기록하기 위해 기술블로그를 만들게 되었다.<br>
+이제 취업을 위해 기본 CS(Computer System) 지식을 공부한 것을 기록하고 알고리즘도 꾸준히 문제를 푸는 과정들도 기록 할 예정이다.
+<br>
+블로그 생성 과정을 이 게시물에 적은 후 마크다운 문법들을 별도로 게시글을 작성할 예정임.
+---
+### 1. GitHub Repository 생성 
+![레포등록사진](https://user-images.githubusercontent.com/112313165/224630140-5d07314c-d99e-4b7f-ba5b-1dad576da6eb.png)
 
-First, do you notice the TOC on the right side? Try to scroll down to read this post, you'll find that the TOC is always sticky in the viewport.
+1. 레포지토리 이름을 ```username.github.io```형식으로 작성한다.
+2. Add a README file을 선택한 후 레포지토리 생성
 
-Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. *Aenean eu leo quam.* Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+### 2. Git clone 이후 테스트까지
+1. 생성한 레포지토리를 터미널 환경에서 ```git clone http주소```형식으로 생성한 레포지토리 주소를 입력하여 로컬에 저장한다.
+ex) ```git clone https://github.com/parkyoungjiin/parkyoungjiin.github.io.git``` 
 
-> Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.
+2. clone 한 폴더로 이동하여 테스트를 위해 Index 파일 생성(파일이 없는 경우 자동생성 된다.)
+`cd username.github.io` 
+`echo "Hello World" > index.html`
 
-Etiam porta **sem malesuada magna** mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+- cd : 디렉토리 이동 명령어
+`cd 디렉토리명`
 
-## Inline HTML elements
+- echo: 문자열을 출력하는 명령어.
+`echo "문자열" > 파일명.html` 을 할 경우 덮어쓰기 옵션으로 인해 파일명에 문자열 내용이 저장된다.
+ `echo "문자열" >> 파일명.html`의 경우는 추가**
 
-HTML defines a long list of available inline tags, a complete list of which can be found on the [Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+ 3. 생성된 파일은 ls 명령어로 확인 할 수 있음.
+ 디렉토리 이동 : `cd username.github.io`
+ 디렉토리 목록 : `ls`
 
-- **To bold text**, use `<strong>`.
-- *To italicize text*, use `<em>`.
-- <mark>To highlight</mark>, use `<mark>`.
-- Abbreviations, like <abbr title="HyperText Markup Langage">HTML</abbr> should use `<abbr>`, with an optional `title` attribute for the full phrase.
-- Citations, like <cite>&mdash; Mark Otto</cite>, should use `<cite>`.
-- <del>Deleted</del> text should use `<del>` and <ins>inserted</ins> text should use `<ins>`.
-- Superscript <sup>text</sup> uses `<sup>` and subscript <sub>text</sub> uses `<sub>`.
+ 4. 파일이 올라갔을 경우 git에 올려주기 !
+ 위 명령어를 차례대로 입력해주면 깃허브에 올라간다.
 
-Most of these elements are styled by browsers with few modifications on our part.
+```
+git add .
+git commit -m "메시지"
+git push origin main
+```
+5. 주소에 http://username.github.io 를 입력하면 홈페이지가 만들어진 것을 확인할 수 있다. 
 
-## Footnotes
+---
+### 3. ruby 설치
 
-Footnotes are supported as part of the Markdown syntax. Here's one in action. Clicking this number[^fn-sample_footnote] will lead you to a footnote. The syntax looks like:
+```
+여기서부터 전쟁이였다.. 
+ruby가 무엇이고 jekyll이 무엇인지 너무나 생소하여 정리해보려 한다.
+```
 
-{% highlight text %}
-Clicking this number[^fn-sample_footnote]
-{% endhighlight %}
+#### ruby
+- ruby란 동적 객체 지향 **스크립트 프로그래밍 언어**이다.
+- **스크립트 언어**란, 기존에 이미 존재하는 소프트웨어를 제어하기 위한 용도로 쓰이는 언어이다.(javascript, Python이 있다.)
+- 여기서는 **jekyll이 Ruby 언어로 만들어졌기에 설치한다 정도로 알면 될것 같다.** 
 
-Each footnote needs the `^fn-` prefix and a unique ID to be referenced for the footnoted content. The syntax for that list looks something like this:
+#### ruby 설치과정
 
-{% highlight text %}
-[^fn-sample_footnote]: Handy! Now click the return link to go back.
-{% endhighlight %}
+여기서 homebrew를 통해 ruby를 설치하였습니다.
+```
+# homebrew 설치
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-You can place the footnoted content wherever you like. Markdown parsers should properly place it at the bottom of the post.
+# 루비 설치
+brew install ruby
 
-## Heading
+# 루비 경로설정(zsh)
+echo 'export PATH=/opt/homebrew/bin:$PATH' >> ~/.zshrc
 
-Vivamus sagittis lacus vel augue rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+```
 
-### Code
+#### rbenv
+rbenv는 루비버전을 관리해주는 프로그램.
+```
+# rbenv 설치
+brew install rbenv
 
-Inline code is available with the `<code>` element. Snippets of multiple lines of code are supported through Rouge. Longer lines will automatically scroll horizontally when needed. You may also use code fencing (triple backticks) for rendering code.
+# rbenv 설정(zsh)
+echo [[ -d ~/.rbenv  ]] && \
+  export PATH=${HOME}/.rbenv/bin:${PATH} && \
+  eval "$(rbenv init -)" >> ~/.zshrc
 
-{% highlight js %}
-// Example can be run directly in your JavaScript console
+# 쉘 환경에 rbenv 연동되도록 설정
+rbenv init
 
-// Create a function that takes two arguments and returns the sum of those arguments
-var adder = new Function("a", "b", "return a + b");
+# 해당 명령어를 통해 설치가능한 ruby 버전 확인
+rbenv install -l
 
-// Call the function
-adder(2, 6);
-// > 8
-{% endhighlight %}
+# 루비 설치(최신 버전으로 진행했음.)
+rbenv install 3.2.1
 
-You may also optionally show code snippets with line numbers. Add `linenos` to the Rouge tags.
+# 전역에서 사용할 ruby 버전을 지정
+rbenv global 3.2.1
 
-{% highlight js linenos %}
-// Example can be run directly in your JavaScript console
+# ruby, rbenv 버전 확인
+ruby -v
+rbenv versions
 
-// Create a function that takes two arguments and returns the sum of those arguments
-var adder = new Function("a", "b", "return a + b");
+# rehash
+rbenv rehash
+```
 
-// Call the function
-adder(2, 6);
-// > 8
-{% endhighlight %}
+###4.  jekyll과 bundler 설치
 
-Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.
+##### Bundler
+요약하자면, 여러 개의 파일을 하나로 묶어주는 프로그램이다.
+[번들러 설명은 여기!](https://velog.io/@ksung1889/%EB%B2%88%EB%93%A4%EB%9F%ACbundler%EB%9E%80)
 
-### Lists
+##### jekyll
+- ruby 언어로 구성
+- 깃허브 블로그 작성 시에 많이 사용함.
+- 마크다운 언어로 작성한 글을 포스팅
+- 정적인 웹사이트로 만들기에 매우 빠르고 가볍다는 특징이 있음.
+- 홈페이지 자동 생성기라고 많이 알려짐.
+##### 설치
+```
+# bundler, jekyll 설치
 
-Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+gem install bundler
+gem install jekyll
 
-- Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-- Donec id elit non mi porta gravida at eget metus.
-- Nulla vitae elit libero, a pharetra augue.
+# 다운로드 후 기존 index.html 파일을 삭제
+rm -f index.html
 
-Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.
+# git clone 한 폴더에서 jekyll 생성
+jekyll new ./
+```
 
-1. Vestibulum id ligula porta felis euismod semper.
-2. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-3. Maecenas sed diam eget risus varius blandit sit amet non magna.
+사진 넣을 공간(성공 시) 2개
 
-Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.
+##### 설치 후
+```
+# 번들 업데이트, 설치
+bundle update
+bundle install
 
-<dl>
-  <dt>HyperText Markup Language (HTML)</dt>
-  <dd>The language used to describe and define the content of a Web page</dd>
+# jekyll 서버시작 후 테스트
+bundle exec jekyll serve
+```
 
-  <dt>Cascading Style Sheets (CSS)</dt>
-  <dd>Used to describe the appearance of Web content</dd>
+성공했을 때 화면 사진
+위와 같은 화면이 나타나고 
+http://127.0.0.1:4000/ 를 들어갔을 때 
 
-  <dt>JavaScript (JS)</dt>
-  <dd>The programming language used to build advanced Web sites and applications</dd>
-</dl>
+성공한 사진
 
-Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo.
+##### 테스트 완료 후
+이제 깃에 최신화한 뒤 username.github.io 를 입력하여 자신의 깃허브 블로그 홈페이지에서 작동이 잘 되는 지 확인하면 된다!
 
-### Images
 
-Quisque consequat sapien eget quam rhoncus, sit amet laoreet diam tempus. Aliquam aliquam metus erat, a pulvinar turpis suscipit at.
+## 후기
+```
+블로그를 만들고, 포스팅까지 5일이 걸렸다.
+그 과정에서 좌절하고 이것에 시간을 쏟는 게 맞는지 생각이 들었다.
+실패하면서 정말 스트레스를 받았지만, 여유를 가져야 한다는 것을 배웠다.
+실패하면서 조급해 할 수록 더욱 안된다는 것을 느꼈고
+조금은 여유를 가지고 포기하지 않고 끝까지 해야 한다는 것을 다시 느꼈다.
 
-![placeholder](http://placehold.it/800x400 "Large example image")
-![placeholder](http://placehold.it/400x200 "Medium example image")
-![placeholder](http://placehold.it/200x200 "Small example image")
+마크다운 언어에 적응이 필요할 것 같고 생각보다는 단순하다.
+그리고 블로그 포스팅에 숙달되기 위해서는 미리 사진은 캡쳐를 해둬야 할 것 같다.
 
-Align to the center by adding `class="align-center"`:
+이제 알고리즘 문제 풀이, 프로젝트 했던 작업들을 올릴 것이며
+면접을 대비하여 CS 지식도 같이 공부하면서 기록할 생각이다.
 
-![placeholder](http://placehold.it/400x200 "Medium example image"){: .align-center}
-
-### Tables
-
-Aenean lacinia bibendum nulla sed consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Upvotes</th>
-      <th>Downvotes</th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <td>Totals</td>
-      <td>21</td>
-      <td>23</td>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <td>Alice</td>
-      <td>10</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <td>Bob</td>
-      <td>4</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <td>Charlie</td>
-      <td>7</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-
-Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
-
------
-
-Want to see something else added? <a href="https://github.com/vszhub/not-pure-poole/issues/new">Open an issue.</a>
-
-[^fn-sample_footnote]: Handy! Now click the return link to go back.
+생각보다 어려운 포스팅이였고, 
+도전 했던것을 포기하지 않고 끝까지 해내서 다행이라 생각한다.
+```
