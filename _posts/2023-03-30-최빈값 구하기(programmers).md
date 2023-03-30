@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 최빈값 구하기(programmers)
-tags: ["Algorithm", "알고리즘"]
+tags: Algorithm
 date: 2023-03-30 11:49
 toc:  true
 toc_label: "최빈값"
