@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [알고리즘]최빈값 구하기(programmers)
+title: 최빈값 구하기(programmers)
 tags: ["Algorithm", "알고리즘"]
 date: 2023-03-30 11:49
 toc:  true
