@@ -22,7 +22,7 @@ toc_label: "최빈값"
 ## 딕셔너리
 - 딕셔너리란, 직역하면 사전이라는 뜻을 갖고 있는데 사람 = people 처럼 **키:값 형태**로 저장하는 자료형이다. <br>
 - value(값)에는 문자열, 숫자, 리스트, 튜플 다 들어갈 수 있다.
-- 딕셔너리 문법 
+## 딕셔너리 문법 정리
 
 ```Python
 # 선언
@@ -85,8 +85,31 @@ dict
 >> {} # 딕셔너리가 비었을 때 빈 중괄호를 리턴함.
 ```
 
+## 최빈값 구하기 풀이(코드)
+
+```Python
+def solution(array):
+    dict ={}
+    answer = 0
+    for i in array:
+        if i in dict:
+            dict[i] += 1
+        else:
+            dict[i] = 1
+    if len(dict) == 1:
+        answer = list(dict.keys())[0]
+    elif sorted(dict.values())[-1] == sorted(dict.values())[-2]:
+        answer = -1
+    else:
+        first_value = sorted(dict.values())[-1]
+        for key, value in dict.items():
+            if value == first_value:
+                answer = key
+    
+    return answer
 
 
+```
 ### 참조 사이트
 [딕셔너리 문법정리!](https://wikidocs.net/16)<br>
 [최빈값 풀이!]()
