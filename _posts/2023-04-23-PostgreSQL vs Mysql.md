@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [SQL]PostgreSQL vs Mysql
+title: (SQL)PostgreSQL vs Mysql
 tags: [CS, PostgreSQL, Mysql]
 date: 2023-04-23 11:49
 toc:  true
@@ -15,6 +15,7 @@ toc_label: "SQL"
     - [Postgre의 역사](https://sungsoo.github.io/2014/08/01/postgresql.md.html)
 - 테이블, 열에 대한 정보를 단순히 저장만 하는 것이 아니라, 사용자가 **데이터 형식/인덱스 형식/함수형 언어**를 정의할 수 있다.
     - 본래 데이터 형식 지원 + 사용자 지정 함수도 가능.
+
 2. PostgreSQL 특징
     - **객체 관계형** 데이터베이스 관리 시스템이다.
         - Mysql의 경우는 순수 관계형 데이터베이스
@@ -37,20 +38,12 @@ toc_label: "SQL"
 2. 
 
 ## 코딩 차이점
-    |내용|Mysql|PostgreSQL|
-    |---|---|---|
-    |대소문자 구분 여부|대소문자 구분 X|대소문자 구분 O|  
-    |기본문자 집합, 문자열|UTF-8로 변환 필요|UTF-8로 변환 필요 없음.(허용X)|
-    |IF, IFNULL, CASE문|IF, IFNULL 사용 가능|CASE문만 사용 가능|
-    1. 대소문자 구분 여부
-        1. MySQL : 대소문자를 구분하지 않는다
-        2. PostgreSQL : 대소문자를 구분!
-    2. 기본문자 집합, 문자열
-        1. MySQL : UTF-8로 변환해줘야 함. 
-        2. PostgreSQL : UTF-8로 변환할 필요 없음(+허용되지 않음)
-    3. IF / IFNULL / CASE 문
-        1. MySQL : IF / IFNULL 사용 가능
-        2.  PostgreSQL : CASE 문만 사용 가능( IF / IFNULL 사용 불가능)
+|내용|Mysql|PostgreSQL|
+|---|---|---|
+|대소문자 구분 여부|대소문자 구분 X|대소문자 구분 O|  
+|기본문자 집합, 문자열|UTF-8로 변환 필요|UTF-8로 변환 필요 없음.(허용X)|
+|IF, IFNULL, CASE문|모두 사용 가능|CASE문만 사용가능<br>IF 대신, coalesce()를 사용함|
+
 ## 결론
-    1. 복잡한 쿼리, 대규모 데이터베이스를 다룰 수 있는 풍부한 기능이 필요할 경우 PostgreSQL이 선택지가 될 수 있음.
-    2. 대중성, 사용용이, 안정성, 속도 등을 원한다면 MySQL을 사용 ( 최근 NoSQL도 지원)
+1. 복잡한 쿼리, 대규모 데이터베이스를 다룰 수 있는 풍부한 기능이 필요할 경우 PostgreSQL이 선택지가 될 수 있음.
+2. 대중성, 사용용이, 안정성, 속도 등을 원한다면 MySQL을 사용 ( 최근 NoSQL도 지원)
