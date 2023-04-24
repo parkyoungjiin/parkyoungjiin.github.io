@@ -1,6 +1,6 @@
 ---
 layout: post
-title: (SQL)PostgreSQL vs Mysql
+title: PostgreSQL vs Mysql
 tags: [CS, PostgreSQL, Mysql]
 date: 2023-04-23 11:49
 toc:  true
