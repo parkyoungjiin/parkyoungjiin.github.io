@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 자바 자료형(ArrayList, LinkedList)
+title: [JAVA]자바 자료형(ArrayList, LinkedList)
 tags: [CS, JAVA]
 date: 2023-04-10 11:49
 toc:  true
@@ -13,8 +13,8 @@ toc_label: "자료형"
 ## ArrayList
 ArrayList란, List의 자식 클래스로 크기가 가변적으로 변하는 선형리스트의 성질을 갖고 있는 자료형이다.
 
-
 ### ArrayList 특징<br>
+
 - 크기를 지정하지 않고도 동적으로 값을 삽입하고 삭제할 수 있다.
 - 인덱스로 데이터에 접근이 가능.
 - 삽입 및 삭제에는 비효율적이다.
