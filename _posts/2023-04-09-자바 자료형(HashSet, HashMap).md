@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 자바 자료형(HashSet, HashMap)
+title: "[CS]자바 자료형(HashSet, HashMap)"
 tags: [CS, JAVA]
 date: 2023-04-09 11:49
 toc:  true

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 자바 자료형(ArrayList, LinkedList)
+title: "[CS]자바 자료형(ArrayList, LinkedList)"
 tags: [CS, JAVA]
 date: 2023-04-10 11:49
 toc:  true
