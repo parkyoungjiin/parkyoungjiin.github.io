@@ -57,3 +57,11 @@ author:
   name: Songzi Vong
   url: https://github.com/vszhub/
   email: vszhub@gmail.com
+
+# Code highlighter
+highlighter: rouge
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
