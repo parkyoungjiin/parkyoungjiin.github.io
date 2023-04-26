@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "[Algorithm]최빈값 구하기(programmers)"
-tags: Algorithm
+tags: [Algorithm, Dictionary]
 date: 2023-03-30 11:49
+categories : [Algorithm]
 toc:  true
 toc_label: "최빈값"
 ---
@@ -22,8 +23,8 @@ toc_label: "최빈값"
 ## 딕셔너리
 - 딕셔너리란, 직역하면 사전이라는 뜻을 갖고 있는데 사람 = people 처럼 **키:값 형태**로 저장하는 자료형이다. <br>
 - value(값)에는 문자열, 숫자, 리스트, 튜플 다 들어갈 수 있다.
-## 딕셔너리 문법 정리
 
+## 딕셔너리 문법 정리
 ```Python
 # 선언
 dict ={}
@@ -48,7 +49,6 @@ dict.keys()
 # **주의** python3부터 keys를 할 경우 dict_keys라는 객체를 리턴한다.
 # 만약, 리턴값이 리스트인 것을 원한다면 list(dict.keys())를 사용해야 한다.
 list(dict.keys())
-
 
 # values()
 dict ={a:1, b:2}
@@ -86,7 +86,6 @@ dict
 ```
 
 ## 최빈값 구하기 풀이(코드)
-
 ```Python
 def solution(array):
     dict ={}
@@ -107,11 +106,11 @@ def solution(array):
                 answer = key
     
     return answer
+```
 
 - python3 부터 list가 아니라, <class ‘dict_keys’> 객체 형태이기에 list로 감싸야지만 리스트형태로 접근이 가능하다.
 - 딕셔너리를 생성한 후 정렬을 통해 인덱스를 활용하여 elif 절은 쉽게 작성하였지만, 최빈값 key값을 뽑아내는 것을 하지 못했는데, 파이썬 문법이 아직 부족하여 풀이를 하지 못했다.
 
-```
 ### 참조 사이트
 [딕셔너리 문법정리!](https://wikidocs.net/16)<br>
 [최빈값 풀이!]()

@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "[CS]자바 자료형(ArrayList, LinkedList)"
-tags: [CS, JAVA]
+title: "[JAVA]자바 자료형(ArrayList, LinkedList)"
+tags: [JAVA]
 date: 2023-04-10 11:49
+categories : [JAVA]
 toc:  true
 toc_label: "자료형"
 ---
