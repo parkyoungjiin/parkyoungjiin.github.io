@@ -26,7 +26,7 @@ toc_label: "최빈값"
 
 ## 딕셔너리 문법 정리
 - **선언**
-```Python
+```python
 dict = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7, 'i':8, 'j':9}
 ```
 - **쌍(키,값) 추가 : dict[key] = value**
@@ -38,7 +38,7 @@ dict['a'] = 1
 >> dict[a:1]
 ```
 - **쌍 제거 (키 : 값 삭제) : del dict[key]**
-```Python
+```python
 # 쌍 삭제 문법
 del dict[key]
 # a의 키를 가진 쌍을 삭제
@@ -46,7 +46,7 @@ del dict[a]
 >> {} # 딕셔너리가 비었을 때 빈 중괄호를 리턴함.
 ```
 - **모든 키 출력 : keys()**
-```Python
+```python
 dict.keys()
 >> dict_keys(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'])
 # **주의** python3부터 keys를 할 경우 dict_keys라는 객체를 리턴한다.
@@ -54,7 +54,7 @@ dict.keys()
 list(dict.keys())
 ```
 - **모든 값 출력 : values()**
-```Python
+```python
 dict.values()
 >> dict_values([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 # values 도 동일하게 dict_values 객체를 리턴한다.
@@ -62,19 +62,19 @@ dict.values()
 list(dict.values())
 ```
 - **모든 키, 값 출력 : items()**
-```Python
+```python
 # -> key, value를 쌍으로 묶은 값을 dict_items 객체로 리턴.
 dict.items()
 >> dict_items([('a', 0), ('b', 1), ('c', 2), ('d', 3), ('e', 4), ('f', 5), ('g', 6), ('h', 7), ('i', 8), ('j', 9)])
 ```
 -**딕셔너리 안에 key가 있는 지 조회 : in key**
-```Python
+```python
 # a라는 키가 dict에 존재하는 지 조회
 dict in a
 >> True
 ```
 -**Key로 Value 값 얻기 : dict.get(key)**
-```Python
+```python
 # 기본 문법
 dict.get('key')
 # a라는 키의 value 얻기.
@@ -82,13 +82,13 @@ dict.get('a')
 >> 0
 ```
 - **Key, Value 모두 지우기 : clear**
-```Python
+```python
 dict.clear()
 dict
 >> {} # 딕셔너리가 비었을 때 빈 중괄호를 리턴함.
 ```
 ## 최빈값 구하기 풀이(코드)
-```Python
+```python
 def solution(array):
     dict ={}
     answer = 0
