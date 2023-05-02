@@ -30,7 +30,7 @@ toc_label: "최빈값"
 dict = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7, 'i':8, 'j':9}
 ```
 - **쌍(키,값) 추가 : dict[key] = value**
-```Python
+```python
 # 쌍 추가 문법
 dict[key] = value
 # a라는 키에 대응하는 1이라는 값이 추가.
