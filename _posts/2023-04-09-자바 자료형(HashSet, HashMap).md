@@ -26,12 +26,10 @@ HashSet이란, set 인터페이스를 구현한 클래스이다.
 
 ### HashSet 메서드
 - **선언**
-
 ```java
 HashSet<데이터타입> 변수명 = new HashSet<데이터타입>() // 기본 선언형태;
 HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3)); //초기값 지정형태
 ```
-
 - **add(value)**
 ```java
 HashSet<Integer> set = new HashSet<Integer>(); //HashSet생성
@@ -44,7 +42,6 @@ set.add(3); //값 3 추가
 set.remove(1); // 값 1 삭제
 set.clear(); // 모든 값 삭제
 ```
-
 - **size()**
 ```java
 HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3,4)); //HashSet 생성
@@ -55,7 +52,6 @@ System.out.println("set 크기 : " + set.size()); //set 크기 : 4
 HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3,4)); //HashSet 생성
 System.out.println("확인 : " + set.contains(1)) // 확인 : true
 ```
-
 - **출력** (Set컬렉션을 그냥 print하게 되면 대괄호 [ ]로 묶여서 set의 전체 값이 출력된다.)
 ```java
 HashSet<Integer> set = new HashSet<Integer>(Arrays.asList(1,2,3,4)); //HashSet 생성
