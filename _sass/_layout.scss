@@ -52,13 +52,13 @@ footer {
   }
 }
 
-@media (min-width: $sm-width) {
+@media (min-width: $lg-width) {
   .sidebar-right {
     display: block;
   }
 }
 
-@media (max-width: $sm-width) {
+@media (max-width: $lg-width) {
   .sidebar-right {
     display: none;
   }
