@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[SpringBoot]스프링 부트 환경설정"
+title: "[SpringBoot]Applicaton.yml 파일 설정"
 tags: [Springboot]
 date: 2023-06-05 11:49
 categories : [SpringBoot]
@@ -39,7 +39,6 @@ server:
       force: true
 ```
 - context-path : 프로젝트 실행 시 기본 진입점.
----
 
 ### 2. DB 설정
 - 코드
@@ -61,7 +60,7 @@ spring:
 - prefix, suffix를 통해 controller에서 중복으로 작성하는 부분을 피할 수 있다.
 
 
-### 3. JPA 설정(JPA 내용도 추후 포스팅 예정! 설정은 같이 작성하겠습니다.)
+### 3. JPA 설정
 - 코드
 ```yml
 jpa:
