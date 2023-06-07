@@ -1,0 +1,44 @@
+---
+layout: post
+title: "[SpringBoot] Controller와 RestController의 차이"
+tags: [Springboot]
+date: 2023-06-06 11:49
+categories : [SpringBoot, Spring]
+toc:  true
+toc_label: "Controller와 RestController의 차이"
+---
+
+## Intro
+> @Autowired에 대한 강의를 듣다가 스프링 컨테이너와 스프링 빈에 대한 개념이 잡히지 않아서 정리하고자 한다.
+
+## 스프링 컨테이너
+> 스프링 컨테이너란, 스프링 빈(자바 객체)를 관리하는 공간이다. @Component 설정된 클래스들을 등록하여 생성~소멸까지를 개발자 대신 관리 해주는 곳이다.
+
+### 스프링 컨테이너 등록 과정
+1. 스프링이 실행될 때 `@Component` 어노테이션이 설정되어 있는 클래스 파일들을 검색
+2. 자바 객체를 컨테이너에 등록
+3. 의존성 주입
+
+### 스프링 컨테이너에 빈을 등록하는 이유
+- 객체 간의 의존성 주입과 관련이 있다.
+- 의존관계를 등록할 때 컨테이너에서 빈을 찾고, 해당 빈과의 의존성을 주입하여 컨테이너에 등록하기 때문임.
+
+## 스프링 빈
+> 스프링 빈이란, 스프링 컨테이너에 의해서 생성된 자바 객체이며 관리되는 대상을 말한다.
+
+### 스프링 빈 등록 방법(2가지)
+1. 컴포넌트 스캔
+- 클래스 위에 `@Component`가 선언되어 있으면 스프링이 자동으로 컨테이너에 빈을 등록한다.
+- 컴포넌트 스캔 대상
+  - @Component 구조
+  ![@Component구조](https://user-images.githubusercontent.com/112313165/244062533-083228b6-f904-4fea-8242-1ffe486c8653.png)
+  - `@Component`와 @Component를 상속받는 `@Controller, @Service, @Repository, @Configuraton`이 스캔 대상이 된다.
+2. Java 코드로 등록(@Configuration, @Bean)
+- 클래스를 생성한 후 클래스 상단에 @Configuration, 인스턴스를 생성하는 메서드 위에 @Bean을 작성한다.
+- `@Configuration` 어노테이션이란, 해당 클래스에서 1개 이상의 bean을 생성하고 있음을 명시하기에 @Bean과 @Configuration이 함께 사용되어야 한다.
+- `@Bean` 어노테이션이란 개발자가 직접 제어가 불가능한 외부 라이브러리 등을 Bean으로 만들 경우 사용한다. (authenticationManager, PasswordEncoder 등이 예시로 있다.)
+
+
+## 참고 사이트
+[스프링 컨테이너, 스프링 빈 참고 블로그](https://velog.io/@tank3a/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%99%80-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B9%88)<br>
+[로직그림이 잘 설명되어 있는 블로그](https://dncjf64.tistory.com/288)
