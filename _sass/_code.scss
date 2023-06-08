@@ -6,9 +6,6 @@
 code,
 pre {
   font-family: var(--code-font);
-  color: red;
-  background-color: rgba(135,131,120,0.15);
-
 }
 
 code {
@@ -20,12 +17,15 @@ pre {
   margin-top: 0;
   margin-bottom: var(--spacer-3);
   overflow: auto;
+
 }
 
 .highlight {
   padding: var(--spacer);
   margin-bottom: var(--spacer);
   border-radius: var(--border-radius);
+  background-color: var(--code-bg);
+
 
   pre {
     margin-bottom: 0;
