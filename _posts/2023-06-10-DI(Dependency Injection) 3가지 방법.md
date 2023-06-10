@@ -18,6 +18,7 @@ toc_label: "DI(Dependency Injection) 3가지 방법"
 
 ## 1. Field Injection
 > 필드 상단에 @Autowired를 선언하여 의존성을 주입하는 방법이다. 대부분 이 방법을 사용해서 프로젝트를 진행하였기에 익숙한 방법이다.
+- 코드
 ```java
 @Controller
 public class BoardController {
@@ -26,6 +27,7 @@ public class BoardController {
 	private BoardService boardService;
 }
 ```
+
 ### 1-1. @Autowired란
 > @Autowired란, 스프링 컨테이너에 등록한 빈에게 의존관계주입이 필요할 때, DI(의존성 주입)을 도와주는 어노테이션이다.
 - 스프링에서 빈 인스턴스가 생성된 이후 @Autowired를 설정한 메서드가 자동으로 호출되고, 인스턴스가 자동으로 주입된다.
