@@ -18,6 +18,7 @@ toc_label: "DI(Dependency Injection) 3가지 방법"
 
 ## 1. Field Injection
 > 필드 상단에 @Autowired를 선언하여 의존성을 주입하는 방법이다. 대부분 이 방법을 사용해서 프로젝트를 진행하였기에 익숙한 방법이다.
+
 - 코드
 ```java
 @Controller
@@ -59,6 +60,7 @@ public class UserController {
 
 ## 3. Constructor Injection (생성자 주입)
 > Constructor Injection이란, 생성자를 주입한 뒤 @Autowired를 선언하여 의존성을 주입하는 방법이다.
+
 - 코드
 ```java
 //---------기본 DI 방법----------
