@@ -76,8 +76,6 @@ public class UserController {
 	public UserController(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-
-
 //----------final과 RequiredArgsConstrutor(lombok) 사용 -------
 @RequiredArgsConstrutor
 @RestController
