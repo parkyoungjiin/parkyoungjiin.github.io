@@ -34,6 +34,7 @@ public void findById(@PathVariable int id) { // int id == {id}  변수명이 같
 
 	}
 ```
+
 ## 결론
 - 쿼리스트링에 붙은 변수를 받기 위해서는 @RequestParam을 사용한다.
 - Post로 전송 시 자바 객체(ex, User 객체)로 받기 위해서는 @RequestBody를 사용한다.
