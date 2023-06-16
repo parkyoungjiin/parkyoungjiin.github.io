@@ -2,7 +2,7 @@
 layout: post
 title: "[SpringBoot] @RequestBody, @RequestParam, @PathVariable 정리"
 tags: [Springboot]
-date: 2023-06-12 11:49
+date: 2023-06-11 11:49
 categories : [SpringBoot, Spring]
 toc:  true
 toc_label: "RequestBody, RequestParam 정리"
