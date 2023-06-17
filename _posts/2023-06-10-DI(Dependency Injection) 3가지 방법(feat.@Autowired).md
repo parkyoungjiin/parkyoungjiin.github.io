@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[SpringBoot] DI(Dependency Injection) 3가지 방법"
+title: "[SpringBoot] DI(Dependency Injection) 3가지 방법(feat.@Autowired)"
 tags: [Springboot]
 date: 2023-06-10 11:49
 categories : [SpringBoot, Spring]
