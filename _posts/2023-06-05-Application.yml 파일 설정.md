@@ -16,7 +16,7 @@ toc_label: "스프링 부트"
 - 레거시에서 web.xml, root-context.xml, servlet-context.xml 설정했던 작업들을 한 파일로 작성할 수 있는 파일이다. Application.yml 파일로 부트 대부분의 설정을 한다고 생각하면 된다.
 
 2. 특징
-- <span style='color:#1E90FF'>형식 : key: value</span>(<span style="color:red">주의 !<span> 콜론 뒤에 공백을 한 칸 무조건 띄워야함.)
+- <span style='color:#1E90FF'>형식 : key: value</span>(<span style="color:#FF6347">주의 !<span> 콜론 뒤에 공백을 한 칸 무조건 띄워야함.)
 - 중괄호가 없음.
 - 들여쓰기 스페이스 2칸 필수(지키지 않으면 파일 동작 X)
 - yaml 파일은 간소화하여 <span style='color:#1E90FF'>가독성이 좋은 파일임.</span>
