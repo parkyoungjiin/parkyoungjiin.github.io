@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "[SpringBoot] @Component, @Configuration, @Bean 정리"
-tags: [Springboot]
+title: "[Spring] @Component, @Configuration, @Bean 정리"
+tags: [Spring]
 date: 2023-06-18 11:49
-categories : [SpringBoot, Spring]
+categories : [Spring]
 toc:  true
 toc_label: "@Component, @Configuration, @Bean 정리"
 ---
