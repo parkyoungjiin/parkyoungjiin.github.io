@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Algorithm]Lv1. 둘만의 암호(programmers)"
+title: "[Algorithm] Lv1. 둘만의 암호(programmers)"
 tags: [Algorithm, Python]
 date: 2023-07-26 10:00
 categories : [Algorithm]
