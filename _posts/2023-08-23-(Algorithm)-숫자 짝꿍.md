@@ -1,10 +1,9 @@
 ---
 layout: post
-title: "[Algorithm] 숫자 짝꿍"
-tags: [Algorithm]
+title: "[Algorithm] Lv1. 숫자 짝꿍((programmers)"
+tags: [Algorithm, Python]
 date: 2023-08-23 10:31
 # last_modified_at: 2023-07-07 14:29
-
 categories : [Algorithm]
 toc:  true
 toc_label: "숫자 짝꿍"
@@ -28,17 +27,17 @@ toc_label: "숫자 짝꿍"
 
 ### 문제점(테스트 결과: 6~15 실패)
 1. 반례
-  - solution(100, 100) 으로 진행했을 때 0에 대한 처리가 되지 않았음. (출력이 100이 되야 하는데 위 접근방법으로 진행 시 10이 출력 되었음.)
+- solution(100, 100) 으로 진행했을 때 0에 대한 처리가 되지 않았음. (출력이 100이 되야 하는데 위 접근방법으로 진행 시 10이 출력 되었음.)
 2. 문제 해결과정
-  - 0만 존재하는 경우를 처리하는 부분을 별도로 분리하였음.
-  - <span style ="color:#FF6347">변경 전 코드</span>
+- 0만 존재하는 경우를 처리하는 부분을 별도로 분리하였음. (분기가 많아짐에 따라 코드가 복잡해지는 현상 해결)
+- <span style ="color:#FF6347">변경 전 코드</span>
     ```python
     for i in x_dict.keys():
         # key가 y_dict에 존재할 경우 & 0이 아닌 경우
         if i in y_dict and i != '0':
-						# min 사용 이유 : x_dict, y_dict에서 적은 횟수가 공통횟수이기 때문에 사용.
+                        # min 사용 이유 : x_dict, y_dict에서 적은 횟수가 공통횟수이기 때문에 사용.
             answer += str(str(i) * min(x_dict[i], y_dict[i]))
-				# 존재하면서 & 0인 경우 (0인 경우는 1번만 더해야 함.)
+                # 존재하면서 & 0인 경우 (0인 경우는 1번만 더해야 함.)
         elif i in y_dict and i == '0':
             answer += str(i)
         # 내림차순 정렬하기.
@@ -49,7 +48,7 @@ toc_label: "숫자 짝꿍"
         answer = '-1'
     ``` 
 
-  - <span style ="color:#FF6347">변경 후 코드</span>
+- <span style ="color:#FF6347">변경 후 코드</span>
     ```python
     for x in x_dict.keys():
         if x in y_dict:

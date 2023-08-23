@@ -8,6 +8,9 @@ toc:  true
 toc_label: "둘만의 암호"
 ---
 
+## Intro
+> 프로그래머스 Lv1. 문제인 둘만의 암호 문제에 대해 풀이하고자 합니다.
+
 ## 문제
 ![img](https://user-images.githubusercontent.com/112313165/256148652-3d8ada4f-d094-4257-a57f-84261f32031d.png)
 
