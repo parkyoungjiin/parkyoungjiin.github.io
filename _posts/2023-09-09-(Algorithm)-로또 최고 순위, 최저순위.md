@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Algorithm] Lv1. 로또 최고 순위, 최저 순위((programmers)"
+title: "[Algorithm] Lv1. 로또 최고 순위, 최저 순위"
 tags: [Algorithm, Python]
 date: 2023-09-09 10:31
 # last_modified_at: 2023-07-07 14:29
