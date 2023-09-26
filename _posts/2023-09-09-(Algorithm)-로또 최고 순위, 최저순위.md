@@ -13,13 +13,11 @@ toc_label: "로또 최고 순위, 최저 순위"
 > 프로그래머스 Lv1. 문제인 로또 최고 최저순위 문제를 풀다가 계속 코드가 깔끔하지 못하고 쓸데없는 분기문을 작성하는 것 같아서 기억하고자 포스팅한다.
 
 ## 문제
-
 ![img](https://user-images.githubusercontent.com/112313165/266749313-f7a51184-7223-44ca-96f4-ef21eb6b05de.png)
 ![img](https://user-images.githubusercontent.com/112313165/266749317-7616bc01-3313-4d15-8b3f-5da869a0cc9e.png)
-
+ 
 ---
 ## 입출력 예시
-
 ![img](https://user-images.githubusercontent.com/112313165/266749318-fba60988-c81a-4cbd-b05a-26022730cefc.png)
 
 ---
@@ -41,9 +39,9 @@ toc_label: "로또 최고 순위, 최저 순위"
 
 
 
---- 
-## ⭕️ 정답 코드1(나의 풀이)
+---
 
+## ⭕️ 정답 코드1(나의 풀이)
 ```python
 def solution(lottos, win_nums):
     answer = []
@@ -74,7 +72,6 @@ def solution(lottos, win_nums):
 ---
 
 ## ⭕️ 정답 코드2(리팩토링 코드)
-
 ```python
 def solution(lottos, win_nums):
     answer = []
@@ -93,12 +90,8 @@ def solution(lottos, win_nums):
 --- 
 
 ## 회고
-
 1. <span style ="color:#FF6347">무언가를 세야 할 때 count 함수를  쓰도록 생각하자.</span>
 2. 습관적으로 if, else문을 사용하는 것을 지양하자.
-
-
-
 
 ## 참조 사이트
 
