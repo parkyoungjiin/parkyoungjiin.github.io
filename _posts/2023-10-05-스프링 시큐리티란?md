@@ -1,0 +1,127 @@
+---
+layout: post
+title: "[Spring Security] 스프링 시큐리티의 개념과 구조?"
+tags: [Spring Security]
+date: 2023-10-05 12:00
+# last_modified_at: 2023-10-04 16:00
+
+categories : [Spring Security]
+toc:  true
+toc_label: "Spring Security"
+---
+
+## Intro
+> 스프링 시큐리티에 대해서 정리하고자 한다.
+
+## 스프링 시큐리티 개념
+> 스프링 시큐리티란, 스프링을 기반으로 애플리케이션의 보안(인증, 권한, 인가)를 담당하는 프레임워크이다.<br>
+> <span style ="color:#1E90FF">즉, 인증과 인가를 담당하는 프레임워크라고 생각하면 된다.</span>(스프링 공식페이지에서 소개한 문장) <br>
+
+스프링 시큐리티는 <span style ="color:#1E90FF">Dispatcher Servlet의 앞에 위치하는 필터와 필터 체인으로 구성된 모델이다.</span> 그렇기에 스프링 영역에 들어가기 전 작업을 처리할 수 있다는 특징이 있다.
+
+![img](https://camo.githubusercontent.com/06a5f4201719e2175bf6a6f3d98b3f191b2f5457220585fa281b443173c3cde5/68747470733a2f2f637068696e662e707374617469632e6e65742f6d6f6f632f32303230303330315f3131302f313538333036313339333734344f615942345f504e472f6d6365636c6970312e706e67)
+
+스프링 시큐리티는 다양한 필터들을 제공하는데, 이렇게 제공되는 필터들을 시큐리티 필터 체인이라 한다.
+
+## 스프링 시큐리티 기본용어
+AOP에는 <span style ="color:#1E90FF">인증(Authentication), 인가(Authorization), 권한, 접근 주체(principal)</span>라는 개념이 있다.
+
+1. 접근 주체(principal) : 보호된 대상에 접근하는 주체를 의미한다.
+2. 인증(Authentication) : 해당 사용자가 본인이 맞는지를 확인하는 절차를 의미한다.
+3. 인가(Authorization) : 인증된 주체가 요청한 자원에 권한을 갖고 있는 지 검사하는 과정이다.
+4. 권한(Authorize) : 인증된 사용자가 어떤 것을 할 수 있는지를 의미한다.
+
+---
+## 스프링 시큐리티 의존성 설정(maven)
+```
+<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+```
+pom.xml에 직접 작성해도 되며, 프로젝트를 생성할 때 설정해도 된다.
+
+---
+## 스프링 시큐리티 초기 화면
+![img](https://user-images.githubusercontent.com/112313165/272823869-2cdee97b-f9d5-438f-9a1e-a8ae6f8eeb28.png)
+
+시큐리티 의존성을 설정하게 되면 어떤 페이지를 가더라도 위 사진과 같은 창이 뜨게 된다.<br>
+기본적으로 Spring Security는 인증되지 않은 사용자는 서비스를 사용하지 못하도록 설정되어있다.<br>
+그렇기에 별도로 SecurityConfig.java 파일을 통해서 시큐리티 설정을 해줘야 한다.
+
+---
+## SecurityConfig.java 파일 설정.
+
+### SecurityConfig.java 코드
+해당 파일은 Spring version : 2.7.12 , java version: 11으로 작성된 파일입니다.
+
+```java
+package com.cos.security.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.cos.security.oauth.PrincipalOauth2UserService;
+
+import lombok.AllArgsConstructor;
+
+
+@Configuration // IoC 빈(bean)을 등록
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // Secured 어노테이션 활성화
+@AllArgsConstructor
+public class SecurityConfig {
+	@Autowired
+	private PrincipalOauth2UserService principalOauth2UserService;
+
+	@Autowired
+    BCryptPasswordEncoder encoder;
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.authorizeRequests()
+				.antMatchers("/user/**").authenticated() // authenticated : /user의 주소는 인증되야만 한다.
+				.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") // access : /admin/* 주소는 인증 + Role을 가져야 함.
+				.anyRequest().permitAll() //admin, user를 제외한 주소는 허용 된다.
+				.and()
+				.formLogin()
+				.loginPage("/loginForm")
+				.loginProcessingUrl("/login")// login 주소가 호출되면 시큐리티가 낚아채서 로그인 진행함.
+				.defaultSuccessUrl("/")
+				.and()
+				.oauth2Login()
+				.loginPage("/loginForm")
+				.userInfoEndpoint()
+				.userService(principalOauth2UserService);
+
+		return http.build();
+	}
+}
+
+```
+
+### Authorization(인가)
+위 코드 중에서 Authorization을 설정하는 부분이 http.authorizeRequests() 이후의 코드들이다.<br>
+<span style ="color:#1E90FF">antMatchers</span>를 통해 여러 요청에 대해서 역할에 따라 경로 패턴을 설정할 수 있다.<br>
+위 코드에서는 user의 경우는 인증을 받도록 설정하였고, admin의 경우는 인증 + ROLE_ADMIN이라는 역할을 가진 경우에만 접근하도록 설정하였다.<br>
+
+그리고 그 외의 요청들은 permitAll()을 통해 다른 주소들의 접근은 허용하였음.
+
+주의할 점으로는 permitAll()으로 설정한 경로가 앞단에 위치하게 되면 뒤에 작성되는 패턴들은 적용되지 않는다.
+그렇기에 설정할 때 구체적인 경로(/user/**, /admin/**)를 먼저 작성하고, 뒤에 큰 범위의 경로(permitAll)가 오도록 해야 한다.
+
+
+
+## 참고 사이트
+[AOP 참고 사이트1](https://code-lab1.tistory.com/193)<br>
+[AOP 참고 사이트2](https://velog.io/@backtony/Spring-AOP-%EC%B4%9D%EC%A0%95%EB%A6%AC)<br>
+[AOP 참고 영상1](https://www.youtube.com/watch?v=7BNS6wtcbY8)<br>
+[AOP 참고 영상2](https://www.youtube.com/watch?v=pFO-nt6H-GQ&t=1190s)<br>
+
+
