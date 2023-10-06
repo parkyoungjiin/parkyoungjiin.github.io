@@ -106,15 +106,37 @@ public class SecurityConfig {
 
 ```
 
-### Authorization(인가)
-위 코드 중에서 Authorization을 설정하는 부분이 http.authorizeRequests() 이후의 코드들이다.<br>
-<span style ="color:#1E90FF">antMatchers</span>를 통해 여러 요청에 대해서 역할에 따라 경로 패턴을 설정할 수 있다.<br>
-위 코드에서는 user의 경우는 인증을 받도록 설정하였고, admin의 경우는 인증 + ROLE_ADMIN이라는 역할을 가진 경우에만 접근하도록 설정하였다.<br>
+### 코드 정리
+1. ```authorizeRequest()``` : 인증된 경우에만 접근을 허용하고, 아닌 경우는 접근을 차단하는 기능이다.
+- 위 코드 중에서 Authorization을 설정하는 부분이 authorizeRequests() 이후의 코드들이다.<br>
+- <span style ="color:#1E90FF">antMatchers</span>를 통해 여러 요청에 대해서 역할에 따라 경로 패턴을 설정할 수 있다.<br>
+  - 위 코드에서는 user의 경우는 인증을 받도록 설정하였고, admin의 경우는 인증 + ROLE_ADMIN이라는 역할을 가진 경우에만 접근하도록 설정하였다.<br>
 
-그리고 그 외의 요청들은 permitAll()을 통해 다른 주소들의 접근은 허용하였음.
+  - 그리고 그 외의 요청들은 permitAll()을 통해 다른 주소들의 접근은 허용하였음.
+- 주의할 점으로는 <span style ="color:#1E90FF">permitAll()으로 설정한 경로가 앞단에 위치하게 되면 뒤에 작성되는 패턴들은 적용되지 않는다.</span> 그렇기에 <span style ="color:#FF6347">permitAll()을 작성할 때 구체적인 경로("/user/*", "/admin/*")를 먼저 작성하고, 뒤에 큰 범위의 경로(permitAll)가 오도록 해야 한다.</span>
 
-주의할 점으로는 permitAll()으로 설정한 경로가 앞단에 위치하게 되면 뒤에 작성되는 패턴들은 적용되지 않는다.
-그렇기에 설정할 때 구체적인 경로(/user/**, /admin/**)를 먼저 작성하고, 뒤에 큰 범위의 경로(permitAll)가 오도록 해야 한다.
+2. ```formLoginUrl().loginPage("로그인 페이지").``` : 일반 로그인 시 커스텀 로그인 페이지를 지정함.
+3. ```loginProcessingUrl("주소)``` : 로그인 요청 주소
+4. ```oauth2Login()``` : OAuth 로그인 진행 시 페이지
+
+## Spring Security 구조
+![img](https://user-images.githubusercontent.com/112313165/273244534-ba076305-4a1b-44c7-becb-4bdb0b83ae96.png)
+### Spring Security 구조 처리과정
+1. Http Request
+2. AuthenticationFilter
+   - AuthenticationFilter는 요청이 들어오면 가로채는 역할을 한다.
+   - 가로챈 정보를 통해서 UsernamePasswordAuthenticationToken을 생성한다.
+3. AuthenticationManager의 구현체인 ProviderManager에게 생성한 UsernamePasswordToken 객체를 전달한다.
+4. AuthenticationManager는 등록된 AuthenticationProvider(들)을 조회하여 인증을 요구한다.
+5. 실제 DB에서 사용자 인증정보를 가져오는 UserDetailsService에 사용자 정보를 넘겨준다.
+6. 넘겨받은 사용자 정보를 통해 DB에서 찾은 사용자 정보인 UserDetails 객체를 만든다.
+7. AuthenticationProvider(들)은 UserDetails를 넘겨받고 사용자 정보를 비교한다.
+8. 인증이 완료되면 권한 등의 사용자 정보를 담은 Authentication 객체를 반환한다.
+9. 다시 최초의 AuthenticationFilter에 Authentication 객체가 반환된다.
+10. Authenticaton 객체를 SecurityContext에 저장한다.
+
+
+### Spring Security 모듈
 
 
 
