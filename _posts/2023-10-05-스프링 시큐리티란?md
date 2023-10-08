@@ -122,8 +122,8 @@ public class SecurityConfig {
 ## Spring Security 구조
 ![img](https://user-images.githubusercontent.com/112313165/273244534-ba076305-4a1b-44c7-becb-4bdb0b83ae96.png)
 ### Spring Security 구조 처리과정
-1. Http Request
-2. AuthenticationFilter
+1. 사용자의 요청(Http Request)
+2. AuthenticationFilter(필터)
    - AuthenticationFilter는 요청이 들어오면 가로채는 역할을 한다.
    - 가로챈 정보를 통해서 UsernamePasswordAuthenticationToken을 생성한다.
 3. AuthenticationManager의 구현체인 ProviderManager에게 생성한 UsernamePasswordToken 객체를 전달한다.
@@ -137,13 +137,151 @@ public class SecurityConfig {
 
 
 ### Spring Security 모듈
+1. AuthenticationFilter : 인증되지 않은 사용자인 경우 loginPage() 메서드에 설정 해둔 주소로 요청을 가로챈다.
+
+2. UsernamePasswordAuthenticationToken : 사용자의 인증을 한 후 유저네임과 패스워드를 담고 있는 토큰이다.
+   - UsernamePasswordAuthenticationToken에 유저네임, 패스워드를 담겨있기에 이 토큰을 AuthenticationManager에게 전달하여 인증을 수행한다.
+   - 수행 후 인증이 완료되면 Authentication 객체로 반환된다.
+   - AuthenticationProvider에 의해 처리된다. 
+
+3. AuthenticationManager : 인증을 처리하는 클래스로, Authentication에 등록된 AuthenticationProvider에 의해서 처리된다.
+   - 인증이 성공적으로 이뤄지면 Authentication 객체를 SecurityContext에 저장한다.
+
+4. SecurityHolder : 인증이 완료된 사용자 정보를 호출할 수 있는 클래스.
+	- SecurityContext 저장소라고 생각하면 된다.
+	- Holder 객체를 이용해서 위치와 상관없이 전역적으로 SecurityContext에 접근이 가능하다
+
+5. SecurityContext : Authentication 객체를 보관하는 저장소이다.
+   - Authentication 객체를 언제든지 꺼내서 쓸 수 있도록 제공되는 클래스이다.
+   - 인증이 완료되면 세션 영역에 저장되기에 전역적인 참조가 가능하다.
+
+6. Authentication : 사용자의 인증 정보를 저장하는 곳이다.
+   - 요청이 들어올 때 인증된 고객의 정보를 담고 있다고 생각하면 된다.
+   - SecurityContext에 저장된다.
+   - Authentication 안에 유저 정보를 담을 때는 UserDetails, OAuth2User 타입만 들어갈 수 있다.
+ 
+7. UserDetails
+   - 사용자의 정보를 담는 인터페이스.
+   - implements + 오버라이드를 진행한 후에 사용하면 된다.
+   - 
+8. UserDetailsService
+   - UserDetails 를 리턴하는 loadUserByUsername 메서드를 갖고 있는 인터페이스.
+   - implements + 오버라이드를 진행한 후에 사용하면 된다.
+   - login 요청이 들어오면 UserDetailsService에서 loadUserByUsername를 실행하여 UserDetails 객체를 리턴한다.
+
+9.  GranedAuthority
+    - 현재 사용자가 갖고 있는 권한을 담은 인터페이스.
+    - ROLE_* 형태로 사용된다. (ex: ROLE_USER, ROLE_ADMIN)
+    - UserDetailsService를 통해서 불러올 수 있다.
+
+## PrincipalDetails.java 파일
+```java
+package test.security.test_security.auth;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import test.security.test_security.dto.Users;
+
+public class PrincipalDetails implements UserDetails {
+
+    private Users users;
+
+    public PrincipalDetails(Users users) {
+        this.users = users;
+    }
+
+    // 해당 유저의 권한을 리턴하는 메서드.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Collection 타입으로 지정했기에 타입을 맞춰준다.
+        Collection<GrantedAuthority> collect = new ArrayList<>();
+        collect.add(new GrantedAuthority() {
+
+            @Override
+            public String getAuthority() {
+                return users.getRole();
+            }
+
+        });
+        return collect;
+    }
+
+    @Override
+    public String getPassword() {
+        return users.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return users.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+}
+```
+
+## PrincipalDetailsService.java 파일
+```java
+package test.security.test_security.auth;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import test.security.test_security.dto.Users;
+import test.security.test_security.repository.UserRepository;
+
+@Service
+public class PrincipalDetailsService implements UserDetailsService {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // findByUsername 메서드는 직접 제작함. (username에 일치하는 데이터가 있는 지 확인.)
+        Users userEntity = userRepository.findByUsername(username);
+
+        if (userEntity != null) {
+            return new PrincipalDetails(userEntity);
+        }
+
+        return null;
+    }
+
+}
+
+```
 
 
 
 ## 참고 사이트
-[AOP 참고 사이트1](https://code-lab1.tistory.com/193)<br>
-[AOP 참고 사이트2](https://velog.io/@backtony/Spring-AOP-%EC%B4%9D%EC%A0%95%EB%A6%AC)<br>
-[AOP 참고 영상1](https://www.youtube.com/watch?v=7BNS6wtcbY8)<br>
-[AOP 참고 영상2](https://www.youtube.com/watch?v=pFO-nt6H-GQ&t=1190s)<br>
+[Security 참고 사이트1](https://dev-coco.tistory.com/174)<br>
+[Security 참고 사이트2](https://velog.io/@hope0206/Spring-Security-%EA%B5%AC%EC%A1%B0-%ED%9D%90%EB%A6%84-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%97%AD%ED%95%A0-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0)<br>
+[Security 참고 영상1](https://www.youtube.com/watch?v=riwrVN1JVbU&list=PL93mKxaRDidERCyMaobSLkvSPzYtIk0Ah&index=5)<br>
 
 
