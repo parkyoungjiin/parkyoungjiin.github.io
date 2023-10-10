@@ -1,0 +1,121 @@
+---
+layout: post
+title: "[Web] 세션과 쿠키"
+tags: [Web]
+date: 2023-10-09 23:00
+# last_modified_at: 2023-10-04 16:00
+
+categories : [Web]
+toc:  true
+toc_label: "Web"
+---
+
+## Intro
+> 세션과 쿠키를 공부했고 JWT에 대해서 공부한 내용을 정리한다.
+
+---
+## JWT(Json Web Token)
+세션, 쿠키, 토큰 이 3가지를 통해서 인증 절차를 거친다. 세션과 토큰은 앞 게시물에 포스팅!(세션과 토큰에 대한 정보는 여기로!)[]<br>
+
+JWT는 JSON 웹 토큰으로, 토큰에 인증에 필요한 정보들을 담아서 암호화시킨 토큰을 의미한다. 세션과 토큰과 유사하게 토큰을 HTTP 헤더에 담아서 서버에 전송한다.<br>
+토큰의 특징으로는 
+1. <span style ="color:#1E90FF">stateless(무상태)</span>
+- 무상태는 말 그대로 상태유지를 하지 않는다는 것이다. 즉, 시스템에 인증 정보를 세션처럼 저장하지 않는다.
+- 인증 정보를 저장하지 않음으로써 세션은 사용자가 증가하면 관리가 어려워지는 등의 문제점들을 해결한다.
+2. <span style ="color:#1E90FF">서명된 토큰</span>
+- 토큰에서 가장 중요한 특징으로는 <span style ="color:#FF6347">서명된 토큰</span>이라는 점이다.<br>
+- 토큰에 공개키/개인키를 쌍으로 사용하여 토큰에 서명할 경우 서명된 토큰은 개인키를 보유한 서버가 서명된 토큰이 정상적인 토큰인 지 인증할 수 있다.<br>
+- 이러한 구조로 인해 JWT에 인증정보를 담아 안전하게 인증을 시도할 수 있게 전달할 수 있다.<br>
+
+---
+## JWT 구조
+![img](https://user-images.githubusercontent.com/112313165/273954510-b9a62ee6-ca26-4fab-a2f1-c27294d77316.png)
+> JWT는 <span style ="color:#1E90FF">헤더(Header), 내용(Payload), 서명(Signature)로 이뤄져있다. 또한 JWT 형태는 .(점)으로 구분되어 있다.</span>
+
+### 헤더(Header)
+> <span style ="color:#1E90FF">헤더(Header)</span>는 토큰의 서명(signature) 생성에 사용된 암호화 알고리즘과 토큰의 타입을 정의한다.
+
+
+### 내용(Payload)
+> <span style ="color:#1E90FF">내용(Payload)</span>은 JWT를 통해 알 수 있는 데이터를 담은 공간이다. 즉, 실제로 사용될 정보에 대한 내용을 담고 있는 섹션이다.(ex. 이름, )
+
+<span style ="color:#1E90FF">내용(Payload)에 담는 정보의 한 조각을 클레임(claim)이라고 부른다.</span> 클레임(claim)은 key:value 형태로 구성되어 있다. (ex. "name" : "park")<br>
+
+<span style ="color:#FF6347">주의할 점으로는 내용(Payload)에는 민감한 정보를 담지 않아야 한다.</span> header, payload는 json으로 디코딩만 되어 있기에 암호화 되지 않아서 jwt를 가지고 디코딩하면 header, payload에 담긴 값을 알 수 있기 때문이다.<br>
+
+클레임은 <span style ="color:#1E90FF">등록된 클레임(registered claim), 공개 클레임(public claim), 비공개 클레임(Private claim)</span>으로 구성되어 있다.<br>
+
+<span style ="color:#1E90FF">등록된 클레임(registered claim)</span>은 토큰의 정보를 담기 위해 정해진 클레임들이다.<br>
+등록된 클레임 종류(7가지로 정의되어 있다.)
+1. iss(issuer) : 토큰 발급자
+2. sub(subject) : 토큰 제목
+3. aud(audience) : 토큰 대상자
+4. exp(expiration) : 토큰 만료시간
+5. nbf(not before) : 토큰 활성 날짜
+6. iat(issued at) : 토큰 발급시간
+7. jti(jwt id) : JWT 토큰 식별자
+<br>
+
+```
+{
+    sub:1,
+    iat: 1516239022
+}
+```
+
+<span style ="color:#1E90FF">공개 클레임(public claim)</span>은 사용자 정의 클레임으로 충돌이 방지된 이름을 가져야 하며, 충돌 방지를 위해 클레임 이름을 URI 형식으로 짓는다.<br>
+
+```
+{
+    "http://example.com/is_root": true
+}
+```
+
+<span style ="color:#1E90FF">비공개 클레임(Private Claim)</span>은 사용자 정의 클레임으로 클라이언트와 서버가 협의하에 임의로 지정한 정보를 저장해서 사용한다. 공개 클레임과 충돌이 일어나지 않게 사용하면 된다.<br>
+
+```
+{
+    "userId": "park",
+    "username": "youngjin"
+}
+```
+
+### 서명(Signature)
+> <span style ="color:#1E90FF">서명</span>은 토큰을 인코딩하거나 유효성 검증을 할 때 사용하는 고유한 암호화 코드이다.
+
+서명은 헤더(Header)와 내용(Payload)을 서명에 명시된 암호화 방식으로 인코딩하고, 인코딩한 값을 비밀키를 이용하여 헤더에서 정의한 알고리즘으로 해싱을 하고, 이 값을 다시 인코딩하여 생성한다.
+
+<span style ="color:#FF6347">여기서 비밀키는 서버만 가지고 있는 키이다.</span> 즉, 서명은 서버가 갖고 있는 개인키로만 암호화를 풀 수 있다.
+```
+{
+    HMACSHA256(
+    base64UrlEncode(header) + "." +
+    base64UrlEncode(payload),
+    your-256-bit-secret
+    )   
+}
+```
+
+## JWT 장단점 및 주의사항
+1. 토큰은 토큰 자체가 이미 인증된 정보이기에 세션과 달리 인증 상태를 저장하지 않기에 DB를 별도로 두지 않아도 된다.
+2. 쿠키를 전달하지 않아도 되기에 쿠키를 사용함으로써 발생하는 취약점이 사라진다.
+3. 위에서도 언급했지만, Payload는 Base64로 인코딩된 것이기에 Payload를 탈취하여 디코딩하면 데이터를 볼 수 있기에 중요한 데이터를 넣지 않아야 한다.
+4. Stateless 상태이기에 한 번 만든 후에는 제어가 불가능하다. 그렇기에 토큰에 만료시간을 꼭 넣어야 한다.
+
+
+## JWT 로직 정리
+헤더(header), 내용(payload), 서명(signature) 각각을 base64를 통해 인코딩하여 JWT 토큰으로 제작한 후 클라이언트에게 돌려준다.(로컬 스토리지에 저장함.)<br>
+클라이언트가 요청을 할 때 로컬 스토리지에 있는 JWT 토큰을 함께 실어서 보낸다.<br>
+서버는 JWT토큰을 받아서 다시 디코딩하여 다시 암호화했을 때 해당 토큰과 일치하는 지 검증하는 과정을 거친다.
+
+
+
+
+
+## 참고 사이트
+[JWT 참고 사이트1](https://brunch.co.kr/@jinyoungchoi95/1)
+[JWT 참고 사이트2](https://velog.io/@dnjscksdn98/JWT-JSON-Web-Token-%EC%86%8C%EA%B0%9C-%EB%B0%8F-%EA%B5%AC%EC%A1%B0)
+[JWT 참고 사이트3](https://hudi.blog/self-made-jwt/)
+[JWT 참고 영상 - 메타코딩](https://www.youtube.com/watch?v=JY6qEnGRXic&t=1036s)
+
+
