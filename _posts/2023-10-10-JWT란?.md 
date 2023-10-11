@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "[Web] 세션과 쿠키"
-tags: [Web]
+title: "[JWT] JWT란"
+tags: [JWT, Spring Security]
 date: 2023-10-09 23:00
 # last_modified_at: 2023-10-04 16:00
 
-categories : [Web]
+categories : [Spring Security]
 toc:  true
-toc_label: "Web"
+toc_label: "JWT"
 ---
 
 ## Intro
@@ -101,7 +101,8 @@ JWT는 JSON 웹 토큰으로, 토큰에 인증에 필요한 정보들을 담아�
 2. 쿠키를 전달하지 않아도 되기에 쿠키를 사용함으로써 발생하는 취약점이 사라진다.
 3. 위에서도 언급했지만, Payload는 Base64로 인코딩된 것이기에 Payload를 탈취하여 디코딩하면 데이터를 볼 수 있기에 중요한 데이터를 넣지 않아야 한다.
 4. Stateless 상태이기에 한 번 만든 후에는 제어가 불가능하다. 그렇기에 토큰에 만료시간을 꼭 넣어야 한다.
-
+5. 토큰의 길이가 길어질 수록 네트워크에 부하가 발생할 수 있다.
+6. 특정 토큰을 강제 만료시키기가 어렵다.(세션은 특정 ID를 로그아웃 시킬 수 있음.)
 
 ## JWT 로직 정리
 헤더(header), 내용(payload), 서명(signature) 각각을 base64를 통해 인코딩하여 JWT 토큰으로 제작한 후 클라이언트에게 돌려준다.(로컬 스토리지에 저장함.)<br>
@@ -109,6 +110,126 @@ JWT는 JSON 웹 토큰으로, 토큰에 인증에 필요한 정보들을 담아�
 서버는 JWT토큰을 받아서 다시 디코딩하여 다시 암호화했을 때 해당 토큰과 일치하는 지 검증하는 과정을 거친다.
 
 
+## JWT 설정
+### 1. maven 및 gradle 의존성 주입
+```maven
+<!-- maven dependencies-->
+<dependency>
+    <groupId>com.auth0</groupId>
+    <artifactId>java-jwt</artifactId>
+    <version>3.4.1</version>
+</dependency>
+
+```
+
+### 2. CorsConfig 설정
+> <span style ="color:#1E90FF">CORS(Cross-Origin-Resource-Sharing)란, 다른 도메인에서 온 요청을 처리하기 위한 보안 기술이며 보안성을 유지하면서 클라이언트가 다른 도메인에서 리소스에 접근할 수 있도록 허용한다.</span> (원래는 다른 도메인에서 요청이 들어올 경우 처리가 불가능함)
+>
+
+```java
+
+import org.apache.catalina.filters.CorsFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+@Configuration
+public class CorsConfig {
+
+   @Bean
+   public CorsFilter corsFilter() {
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      CorsConfiguration config = new CorsConfiguration();
+      
+      config.setAllowCredentials(true); // 서버가 응답할 때 JSON을 자바스크립트에서 처리여부를 설정
+      config.addAllowedOrigin("*"); // 모든 IP에 응답을 허용.
+      config.addAllowedHeader("*"); // 모든 헤더에 응답을 허용.
+      config.addAllowedMethod("*"); // 모든 메서드(GET, POST) 요청을 허용.
+      
+      source.registerCorsConfiguration("/api/**", config);
+      return new CorsFilter();
+   }
+
+}
+
+```
+
+CorsConfiguration 객체를 생성하고 메서드를 통해서 CORS 정책을 정의한 다음<br> UrlBasedCorsConfigurationSource 클래스와 함께 사용하여 특정 URI 패턴에 대해 적용한다.
+설정한 후에 SecurityConfig에 의존성을 주입한다.
+
+### 3. SecurityConfig 설정
+JWT 방식으로 설정해야 하기에 세션으로 로그인했던 파일과는 다르게 제작된다.<br>
+
+1. stateless 서버 구축(JWT이기에 stateless 상태를 설정한다.)
+2. formLogin을 사용하지 않음.
+3. httpBasic disable(http basic 방식이 아닌 http Bearer 방식)
+4. anymatchers 설정(사용자 별 커스텀 설정)
+   
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
+import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
+import com.cos.jwt.repository.UserRepository;
+
+@Configuration
+@EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
+public class SecurityConfig extends WebSecurityConfigurerAdapter{	
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private CorsConfig corsConfig;
+	
+	//Ioc에 등록
+	@Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+	
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
+				.csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+				.formLogin().disable()
+				.httpBasic().disable()
+				.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+				.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+				.authorizeRequests()
+				.antMatchers("/api/v1/user/**")
+				.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+				.antMatchers("/api/v1/manager/**")
+					.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+				.antMatchers("/api/v1/admin/**")
+					.access("hasRole('ROLE_ADMIN')")
+				.anyRequest().permitAll();
+	}
+}
+```
+
+1. ```.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)```
+   - corsFilter를 UsernamePasswordAuthenticationFilter 이전에 실행 시킨다.
+2. ```.formLogin().disable()```
+   - formLogin 방식을 사용하지 않는다.
+3. ```.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) ```
+   - stateless 방식을 사용한다. 
+4. ```.httpBasic().disable()```
+   - httpBasic 방식이 아닌 httpBearer 방식을 사용한다.
 
 
 
