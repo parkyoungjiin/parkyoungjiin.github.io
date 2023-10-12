@@ -14,17 +14,17 @@ toc_label: "JWT"
 > 세션과 쿠키를 공부했고 JWT에 대해서 공부한 내용을 정리한다.
 
 ## JWT(Json Web Token)
-세션, 쿠키, 토큰 이 3가지를 통해서 인증 절차를 거친다. 세션과 토큰은 앞 게시물에 포스팅!(세션과 토큰에 대한 정보는 여기로!)[]<br>
+세션, 쿠키, 토큰 이 3가지를 통해서 인증 절차를 거친다. <br>[세션, 쿠키에 대한 포스팅은 여기서 확인!!](https://parkyoungjiin.github.io/web/2023/10/09/%EC%84%B8%EC%85%98%EA%B3%BC-%EC%BF%A0%ED%82%A4/)<br>
 
 JWT는 JSON 웹 토큰으로, 토큰에 인증에 필요한 정보들을 담아서 암호화시킨 토큰을 의미한다. 세션과 토큰과 유사하게 토큰을 HTTP 헤더에 담아서 서버에 전송한다.<br>
 토큰의 특징으로는 
 1. <span style ="color:#1E90FF">stateless(무상태)</span>
-- 무상태는 말 그대로 상태유지를 하지 않는다는 것이다. 즉, 시스템에 인증 정보를 세션처럼 저장하지 않는다.
-- 인증 정보를 저장하지 않음으로써 세션은 사용자가 증가하면 관리가 어려워지는 등의 문제점들을 해결한다.
+   - 무상태는 말 그대로 상태유지를 하지 않는다는 것이다. 즉, 시스템에 인증 정보를 세션처럼 저장하지 않는다.
+   - 인증 정보를 저장하지 않음으로써 세션은 사용자가 증가하면 관리가 어려워지는 등의 문제점들을 해결한다.
 2. <span style ="color:#1E90FF">서명된 토큰</span>
-- 토큰에서 가장 중요한 특징으로는 <span style ="color:#FF6347">서명된 토큰</span>이라는 점이다.<br>
-- 토큰에 공개키/개인키를 쌍으로 사용하여 토큰에 서명할 경우 서명된 토큰은 개인키를 보유한 서버가 서명된 토큰이 정상적인 토큰인 지 인증할 수 있다.<br>
-- 이러한 구조로 인해 JWT에 인증정보를 담아 안전하게 인증을 시도할 수 있게 전달할 수 있다.<br>
+   - 토큰에서 가장 중요한 특징으로는 <span style ="color:#FF6347">서명된 토큰</span>이라는 점이다.<br>
+   - 토큰에 공개키/개인키를 쌍으로 사용하여 토큰에 서명할 경우 서명된 토큰은 개인키를 보유한 서버가 서명된 토큰이 정상적인 토큰인 지 인증할 수 있다.<br>
+   - 이러한 구조로 인해 JWT에 인증정보를 담아 안전하게 인증을 시도할 수 있게 전달할 수 있다.<br>
 
 ---
 ## JWT 구조
@@ -242,6 +242,57 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 ### JwtAuthenticationFilter
 > JwtAuthenticationFilter란, JWT의 인가를 처리하는 역할을 하는 클래스이다. (인가란, 로그인을 했을 때 해당 사용자가 맞는 지 확인하는 절차)
+
+JwtAuthenticationFilter에서 JwtAuthenticationFilter에서 발급해준 JWT 토큰을 검증하고 유효한 토큰인지 확인한 후에 클라이언트의 요청을 처리한다.<br>
+
+JwtAuthenticationFilter는 BasicAuthentication을 상속하여 JWT 방식은 Basic방식이 아니기 때문에 오버라이딩하여 사용한다.<br>
+
+```java
+// 인증, 권한이 필요한 주소 요청이 있을 때 해당 필터를 탄다. 
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		System.out.println("인증, 권한이 필요한 주소 요청 발생");
+		
+		String jwtHeader = request.getHeader("Authorization");
+		System.out.println("jwtHeader: " + jwtHeader);
+		
+		// Header가 있는 지 확인
+		if(jwtHeader == null || !jwtHeader.startsWith("Bearer")) {
+			chain.doFilter(request, response);
+			return;
+		}
+		
+		// JWT 토큰을 검증해서 정상적인 사용자 인지 확인
+		String jwtToken = request.getHeader("Authorization")
+				.replace("Bearer", "");
+		System.out.println("jwtToken:" + jwtToken);
+		//
+		String username = 
+				JWT.require(Algorithm.HMAC512("secret")).build().verify(jwtToken).getClaim("username").asString();
+		System.out.println("username: "+ username);
+		
+		if (username != null) {
+			System.out.println("username 재확인:" + username);
+			User userEntity = userRepository.findByUsername(username);
+			System.out.println("userEntity 확인:" + userEntity);
+			PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
+			
+			// JWT 토큰 서명을 통해 정상이면 Authentication 객체를 생성.
+			Authentication authentication =
+					new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
+			// 세션 공간에 Authentication을 넣음.
+			// 강제로 시큐리티의 세션에 접근하여 Authentication 객체를 저장함.
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			
+			chain.doFilter(request, response);
+		}
+		
+	}
+```
+
+
+
 
 ## SecurityConfig 추가 설정(Filter 추가 시)
 ```java
