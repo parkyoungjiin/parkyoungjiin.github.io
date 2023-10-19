@@ -4,17 +4,18 @@ title: "[MySQL] ERROR! The server quit without updating PID"
 tags: [MySQL, DB]
 date: 2023-10-18 23:00
 # last_modified_at: 2023-10-04 16:00
-
+w
 categories : [MySQL]
 toc:  true
-toc_label: "DB"
+toc_label: "MySQL"
 ---
 
 ## Intro
 > 예전 프로젝트 sql 파일을 local로 연결을 하다가 mysql을 재설치하였다. 재설치 한 후에 발생하는 에러에 대해서 기록한다. 
 
 homebrew로 삭제 및 재설치를 진행하며, M2 Mac 사용 기준입니다.(디렉토리가 다를 수 있으니 경로를 확인하시길 바랍니다.)
-<span style ="color:#1E90FF">(작성자의 경로: /opt/homebrew/var/mysql)</span>
+<span style ="color:#1E90FF">
+작성자의 경로: /opt/homebrew/var/mysql</span>
 
 처음에 mysql을 재설치 해야겠다는 생각이 들어서 ```brew install mysql``` 을 진행 했는데 이후 워크벤치와 연결이 끊기게 되고 엄청나게 헤맸다.<br>
 
@@ -22,9 +23,9 @@ homebrew로 삭제 및 재설치를 진행하며, M2 Mac 사용 기준입니다.
 
 다른 사람들은 재설치를 하면 된다고 해서 재설치를 진행했으나, 해결한 후 다시 살펴보니 <span style ="color:#FF6347">기존의 파일과 PID를 깔끔하게 지우지 않아서 많이 헤맸다는 결론이 나왔다.</span><br>
 
-## 에러 정리()
-1. "ERROR! The server quit without updating PID file (/usr/local/var/mysql/사용자컴퓨터이름.pid)" 
-2. ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+## 에러 정리
+1. ```"ERROR! The server quit without updating PID file (/usr/local/var/mysql/사용자컴퓨터이름.pid)" ```
+2. ```ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)```
 
 첫 번째 에러의 경우는 mysql.server start를 했을 때 발생한 에러, 두 번째는 mysql -u root를 할 때 발생한 에러이다.
 두 번째 에러는 첫 번째 에러를 해결하고 서버를 시작한 후로는 뜨지 않았다.
